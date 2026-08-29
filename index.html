@@ -9,63 +9,55 @@
   html,body{width:100%;height:100%;overflow:hidden;}
   body{
     font-family:'Arial',sans-serif;
-    background:#120b06;
+    background:#000;
     color:#f3e6d2;
   }
   .screen{
     position:absolute;inset:0;
     display:flex;flex-direction:column;
-    background:
-      radial-gradient(900px 400px at 85% -5%, rgba(217,164,65,.12), transparent 60%),
-      radial-gradient(700px 400px at 0% 110%, rgba(138,90,59,.18), transparent 60%),
-      linear-gradient(160deg,#1a0f08,#0d0704);
-    padding:2.5vh 3vw;
+    background:#000;
     opacity:0;transition:opacity .7s ease;pointer-events:none;
   }
   .screen.active{opacity:1;pointer-events:auto;}
 
-  /* Header fijo */
-  header{display:flex;align-items:center;justify-content:center;gap:1.5vw;padding-bottom:1.5vh;}
+  /* Header fijo con logo */
+  header{
+    position:absolute;top:0;left:0;right:0;z-index:10;
+    display:flex;align-items:center;justify-content:center;gap:1.2vw;
+    padding:2vh 2vw;
+    background:linear-gradient(180deg, rgba(0,0,0,.75), transparent);
+  }
   header .logo{
-    height:clamp(40px,7vh,80px);width:auto;
-    border-radius:50%;object-fit:contain;
-    box-shadow:0 0 0 2px rgba(217,164,65,.5);
+    height:clamp(36px,6vh,72px);width:auto;border-radius:50%;
+    object-fit:contain;box-shadow:0 0 0 2px rgba(217,164,65,.6);
+    background:#fff;
   }
   header .titulo{
-    font-size:clamp(22px,3.2vw,48px);font-weight:900;letter-spacing:2px;
-    text-transform:uppercase;color:var(--crema,#f3e6d2);
+    font-size:clamp(20px,3vw,44px);font-weight:900;letter-spacing:2px;
+    text-transform:uppercase;color:#f3e6d2;
   }
   header .titulo span{color:#d9a441;}
-  header .slogan{font-size:clamp(12px,1.3vw,20px);color:#c9a87c;font-style:italic;}
+  header .slogan{font-size:clamp(11px,1.2vw,18px);color:#e0c79a;font-style:italic;text-align:center;}
 
-  /* Zona de la foto: SIEMPRE completa, nunca recortada */
-  .foto-zone{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;}
-  .foto-zone img{
-    max-width:100%;max-height:100%;
-    width:auto;height:auto;
-    object-fit:contain;                 /* <-- clave: no recorta */
-    border-radius:12px;
-    box-shadow:0 10px 40px rgba(0,0,0,.6);
-  }
+  /* Foto: ahora es 16:9 real, llena toda la pantalla */
+  .foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 
-  /* Nombre del platillo */
+  /* Nombre del platillo en la parte inferior */
   .nombre{
-    text-align:center;padding:1.5vh 0 0.5vh;
-    font-size:clamp(20px,3vw,44px);font-weight:bold;color:#f3e6d2;
+    position:absolute;bottom:0;left:0;right:0;z-index:10;
+    text-align:center;padding:3vh 2vw 2vh;
+    background:linear-gradient(0deg, rgba(0,0,0,.8), transparent);
+    font-size:clamp(22px,3.2vw,48px);font-weight:bold;color:#fff;
+    text-shadow:0 2px 8px rgba(0,0,0,.9);
     text-transform:capitalize;
-  }
-  .pie{
-    text-align:center;padding-top:0.5vh;
-    font-size:clamp(12px,1.4vw,20px);color:#8a6a45;letter-spacing:1px;
   }
 
   /* Indicador de progreso */
-  .barra{position:absolute;bottom:0;left:0;height:5px;width:0;background:#d9a441;}
+  .barra{position:absolute;bottom:0;left:0;height:6px;width:0;background:#d9a441;z-index:20;}
 </style>
 </head>
 <body>
 
-<!-- Plantilla de pantalla: se rellena por JS -->
 <section class="screen active" id="screen">
   <header>
     <img class="logo" src="img/logo.png" alt="Café Veracruzano">
@@ -74,14 +66,13 @@
       <div class="slogan">Son y sabor</div>
     </div>
   </header>
-  <div class="foto-zone"><img id="foto" src="" alt=""></div>
+  <img class="foto" id="foto" src="" alt="">
   <div class="nombre" id="nombre"></div>
-  <div class="pie">— Café Veracruzano —</div>
   <div class="barra" id="barra"></div>
 </section>
 
 <script>
-  // Lista de fotos: ruta y nombre del platillo (SIN precios)
+  // Fotos 16:9 (1920x1080) con nombre del platillo, SIN precios
   const platillos = [
     {img:'img/hotcakes-fresa-platano.jpg', nombre:'Hotcakes con fresa y plátano'},
     {img:'img/hotcakes-fruta.jpg',         nombre:'Hotcakes con fruta fresca'},
@@ -130,6 +121,9 @@
       });
     }, 650);
   }
+
+  // Precarga todas las fotos para rotación sin saltos
+  platillos.forEach(p=>{ const i=new Image(); i.src=p.img; });
 
   mostrar(0);
   setInterval(()=>{
