@@ -61,29 +61,29 @@
 </section>
 
 <script>
-  // Fotos 16:9 (1920x1080) con nombre del platillo, SIN precios
+  // Fotos 16:9 (1920x1080) que rotan, SIN precios ni nombres
   const platillos = [
-    {img:'img/hotcakes-fresa-platano.jpg', nombre:'Hotcakes con fresa y plátano'},
-    {img:'img/hotcakes-fruta.jpg',         nombre:'Hotcakes con fruta fresca'},
-    {img:'img/hotcakes-fresas-flor.jpg',   nombre:'Hotcakes con fresas'},
-    {img:'img/hotcakes-mantequilla.jpg',   nombre:'Hotcakes con mantequilla'},
-    {img:'img/tamales-bandeja.jpg',        nombre:'Tamales veracruzanos'},
-    {img:'img/tamales-hoja.jpg',           nombre:'Tamales en hoja de plátano'},
-    {img:'img/desayuno-tamales.jpg',       nombre:'Desayuno tradicional'},
-    {img:'img/torta-lomito.jpg',           nombre:'Torta de lomito'},
-    {img:'img/tortas-cecina.jpg',          nombre:'Tortas de cecina'},
-    {img:'img/tortas-chilaquiles.jpg',     nombre:'Tortas y chilaquiles'},
-    {img:'img/sandwich-queso.jpg',         nombre:'Sándwich de carne con queso'},
-    {img:'img/tacos.jpg',                  nombre:'Tacos de la casa'},
-    {img:'img/tlayudas.jpg',               nombre:'Tlayudas / memelas'},
-    {img:'img/omelette-cafe.jpg',          nombre:'Omelette del día'},
-    {img:'img/omelette-roll.jpg',          nombre:'Omelette de espinaca'},
-    {img:'img/capuchinos-tres.jpg',        nombre:'Capuchinos'},
-    {img:'img/capuchinos-dos.jpg',         nombre:'Capuchino con canela'},
-    {img:'img/cafe-helado-dos.jpg',        nombre:'Café helado'},
-    {img:'img/cafe-helado-toast.jpg',      nombre:'Café helado'},
-    {img:'img/malteadas-fresa.jpg',        nombre:'Malteadas de fresa'},
-    {img:'img/brownie-helado.jpg',         nombre:'Brownie con helado'}
+    'img/hotcakes-fresa-platano.jpg',
+    'img/hotcakes-fruta.jpg',
+    'img/hotcakes-fresas-flor.jpg',
+    'img/hotcakes-mantequilla.jpg',
+    'img/tamales-bandeja.jpg',
+    'img/tamales-hoja.jpg',
+    'img/desayuno-tamales.jpg',
+    'img/torta-lomito.jpg',
+    'img/tortas-cecina.jpg',
+    'img/tortas-chilaquiles.jpg',
+    'img/sandwich-queso.jpg',
+    'img/tacos.jpg',
+    'img/tlayudas.jpg',
+    'img/omelette-cafe.jpg',
+    'img/omelette-roll.jpg',
+    'img/capuchinos-tres.jpg',
+    'img/capuchinos-dos.jpg',
+    'img/cafe-helado-dos.jpg',
+    'img/cafe-helado-toast.jpg',
+    'img/malteadas-fresa.jpg',
+    'img/brownie-helado.jpg'
   ];
 
   const foto = document.getElementById('foto');
@@ -96,7 +96,7 @@
     const p = platillos[i];
     screen.classList.remove('active');
     setTimeout(()=>{
-      foto.src = p.img;
+      foto.src = p;
       screen.classList.add('active');
       barra.style.transition='none';
       barra.style.width='0';
@@ -110,7 +110,7 @@
   }
 
   // Precarga todas las fotos para rotación sin saltos
-  platillos.forEach(p=>{ const i=new Image(); i.src=p.img; });
+  platillos.forEach(p=>{ const i=new Image(); i.src=p; });
 
   mostrar(0);
   setInterval(()=>{
