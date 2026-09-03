@@ -23,24 +23,30 @@ for y in range(H):
     a = int(top_alpha * (1 - t) ** 1.4)
     d.line([(0, y), (W, y)], fill=(10, 6, 3, a))
 
-# --- Logo circular a la izquierda ---
-logo = Image.open("/opt/data/cafe-veracruzano-menu-tv/img/logo.png").convert("RGBA")
+# --- Logo circular a la izquierda (recortado a círculo, sin fondo negro) ---
+logo = Image.open("/opt/data/cafe-veracruzano-menu-tv/img/logo.png").convert("RGB")
+
+# Detectar el círculo real del logo: bbox de los píxeles no-negros
+import numpy as np
+arr = np.array(logo)
+nmask = arr.sum(axis=2) > 60
+ys, xs = np.where(nmask)
+x0, x1 = xs.min(), xs.max()
+y0, y1 = ys.min(), ys.max()
+# recortar justo al círculo (quitar el margen negro del cuadrado)
+logo = logo.crop((x0, y0, x1+1, y1+1)).convert("RGBA")
+
 logo_size = int(H * 0.58)
 logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
-# enmascarar: recortar fondo negro exterior a transparente (logo es círculo)
-# convertimos los píxeles fuera del círculo a transparente
-mask = Image.new("L", logo.size, 0)
-ImageDraw.Draw(mask).ellipse((0, 0, logo_size, logo_size), fill=255)
-# borde dorado fino
-border = logo_size * 0.98
+
+# Recortar a forma circular: transparente en las esquinas fuera del círculo
+mask_circ = Image.new("L", logo.size, 0)
+ImageDraw.Draw(mask_circ).ellipse((1, 1, logo_size-1, logo_size-1), fill=255)
+logo.putalpha(mask_circ)
+
+# Pegar el logo circular — sin cuadro negro atrás
 logo_x = 40
 logo_y = (H - logo_size) // 2
-# fondo negro redondo detrás del logo (para que se vea el círculo)
-btn = Image.new("RGBA", (logo_size, logo_size), (15, 10, 5, 235))
-btn = Image.composite(btn, Image.new("RGBA", logo.size, (0,0,0,0)), mask)
-img.paste(btn, (logo_x, logo_y), mask)
-# recortar el fondo negro del logo a transparente, dejar solo el círculo verde
-# copiar el logo (su zona circular)
 img.alpha_composite(logo, (logo_x, logo_y))
 
 # --- Textos ---
