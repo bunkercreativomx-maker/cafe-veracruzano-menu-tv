@@ -15,7 +15,7 @@ POSTRES = [
 ]
 COCINA = [
     'hotcakes-fresa-platano.jpg','hotcakes-fresas-flor.jpg','hotcakes-fruta.jpg',
-    'hotcakes-mantequilla.jpg','omelette-cafe.jpg','omelette-roll.jpg',
+    'hotcakes-mantequilla.jpg','omelette-roll.jpg','omelette-cafe-limpio.jpg',
     'sandwich-queso.jpg','tacos.jpg','tlayudas.jpg','torta-lomito.jpg',
     'tortas-cecina.jpg','tortas-chilaquiles.jpg',
 ]
